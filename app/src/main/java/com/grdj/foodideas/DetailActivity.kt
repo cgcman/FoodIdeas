@@ -20,7 +20,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.grdj.foodideas.data.MenuItem
+import com.grdj.foodideas.data.SampleItem
 import com.grdj.foodideas.ui.theme.FoodIdeasTheme
+import com.grdj.foodideas.ui.theme.newMagenta
 
 class DetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,43 +43,66 @@ fun MainContent() {
         color = MaterialTheme.colors.background
     ) {
         Column {
-            Image(
-                modifier = Modifier.fillMaxWidth(),
-                painter = painterResource(id = R.drawable.banner),
-                contentDescription = "Food image",
-            )
-            Column(Modifier.padding(10.dp)) {
-                Text(
-                    text = "Pasta",
-                    style = MaterialTheme.typography.h3
-                )
-                Text(
-                    text = "145 calorias",
-                    color = Color.Red,
-                    style = MaterialTheme.typography.h6,
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    text = "Women, Dress, Summer",
-                    style = MaterialTheme.typography.subtitle1
-                )
-                Rating()
-                Divider(
-                    color = Color.Gray,
-                    thickness = 1.dp,
-                    modifier = Modifier.padding(5.dp)
-                )
-                Text(
-                    text = "Description",
-                    style = MaterialTheme.typography.h5
-                )
-                Text(
-                    textAlign = TextAlign.Justify,
-                    text = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-                )
-            }
+            ProductHeader()
+            ProductDetail(SampleItem)
         }
+    }
+}
+
+@Composable
+fun ProductHeader() {
+    Image(
+        modifier = Modifier.fillMaxWidth(),
+        painter = painterResource(id = R.drawable.banner),
+        contentDescription = "",
+    )
+}
+
+@Composable
+fun ProductDetail(menuItem: MenuItem) {
+    Column(Modifier.padding(10.dp)) {
+        menuItem.apply {
+            Name(name)
+            Details(categories, calories)
+            Rating()
+            CustomDivider()
+            Description(description)
+        }
+    }
+}
+
+@Composable
+fun CustomDivider() {
+    Divider(
+        color = Color.Gray,
+        thickness = 1.dp,
+        modifier = Modifier.padding(5.dp)
+    )
+}
+
+@Composable
+fun Name(name: String) {
+    Text(
+        text = name,
+        style = MaterialTheme.typography.h3
+    )
+}
+
+@Composable
+fun Details(categories: String, calories: String) {
+    Row {
+        Text(
+            text = categories,
+            style = MaterialTheme.typography.subtitle1,
+            modifier = Modifier.weight(1f)
+
+        )
+        Text(
+            text = calories,
+            color = Color.Red,
+            style = MaterialTheme.typography.h6,
+            textAlign = TextAlign.Right,
+        )
     }
 }
 
@@ -104,10 +130,22 @@ fun RatingItem(index: Int, selected: Boolean, onClick: (Int) -> Unit) {
     Image(
         painter = painterResource(id = R.drawable.star),
         contentDescription = null,
-        colorFilter = ColorFilter.tint(if (selected) MaterialTheme.colors.onSurface else MaterialTheme.colors.surface),
+        colorFilter = ColorFilter.tint(if (selected) newMagenta() else MaterialTheme.colors.surface),
         modifier = Modifier.clickable {
             onClick.invoke(index)
         },
+    )
+}
+
+@Composable
+fun Description(description: String) {
+    Text(
+        text = "Description",
+        style = MaterialTheme.typography.h5
+    )
+    Text(
+        textAlign = TextAlign.Justify,
+        text = description
     )
 }
 
