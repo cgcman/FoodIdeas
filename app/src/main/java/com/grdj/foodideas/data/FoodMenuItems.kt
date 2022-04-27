@@ -5,8 +5,8 @@ import com.grdj.foodideas.R
 class FoodMenuItems {
     data class FoodCategory(val image: Int, val name: String )
 
-    object SampleData {
-        val foodCategories = listOf(
+    object FoodCategories {
+        val types = listOf(
             FoodCategory(
                 R.drawable.chicken_ico,
                 "Chicken"

@@ -21,7 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.grdj.foodideas.data.FoodMenuItems.SampleData
+import com.grdj.foodideas.data.FoodMenuItems.FoodCategories.types
 import com.grdj.foodideas.ui.theme.CustomLightGray
 import com.grdj.foodideas.ui.theme.FoodIdeasTheme
 
@@ -87,15 +87,15 @@ fun Body() {
     Row() {
         for (item in 0..2) {
             FoodMenuItem(
-                SampleData.foodCategories[item].image,
-                SampleData.foodCategories[item].name)
+                types[item].image,
+                types[item].name)
         }
     }
     Row() {
         for (item in 3..5) {
             FoodMenuItem(
-                SampleData.foodCategories[item].image,
-                SampleData.foodCategories[item].name)
+                types[item].image,
+                types[item].name)
         }
     }
 }
