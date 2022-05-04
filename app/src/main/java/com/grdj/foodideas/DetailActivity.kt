@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.grdj.foodideas.data.MenuItem
-import com.grdj.foodideas.data.SampleItem
+import com.grdj.foodideas.data.SampleCategory
 import com.grdj.foodideas.ui.theme.FoodIdeasTheme
 import com.grdj.foodideas.ui.theme.newMagenta
 
@@ -30,21 +30,23 @@ class DetailActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FoodIdeasTheme {
-                MainContent()
+                //RecipeDetailScreen()
             }
         }
     }
 }
 
 @Composable
-fun MainContent() {
+fun RecipeDetailScreen(recipeId: Int) {
+    val recipeItem =
+        SampleCategory.first { menuItem -> menuItem.id == recipeId }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
     ) {
         Column {
             ProductHeader()
-            ProductDetail(SampleItem)
+            ProductDetail(recipeItem)
         }
     }
 }
@@ -153,6 +155,6 @@ fun Description(description: String) {
 @Composable
 fun DefaultPreview2() {
     FoodIdeasTheme {
-        MainContent()
+        RecipeDetailScreen(1)
     }
 }

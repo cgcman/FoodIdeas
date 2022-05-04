@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
@@ -21,6 +22,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.grdj.foodideas.data.FoodMenuItems.FoodCategories.types
 import com.grdj.foodideas.ui.theme.CustomLightGray
 import com.grdj.foodideas.ui.theme.FoodIdeasTheme
@@ -30,20 +37,41 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FoodIdeasTheme {
-                Home()
+                FoodIdeaApplication()
             }
         }
     }
 }
 
 @Composable
-fun Home() {
+fun FoodIdeaApplication() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "home") {
+        composable(route = "home") {
+            Home(navController)
+        }
+        composable(route = "list") {
+            RecipeListScreen(navController)
+        }
+        composable(route = "detail/{recipeId}", arguments = listOf(navArgument("recipeId") {
+            type = NavType.IntType
+        })) { navBackStackEntry ->
+            RecipeDetailScreen(navBackStackEntry.arguments!!.getInt("recipeId"))
+        }
+    }
+}
+
+@Composable
+fun Home(navController: NavHostController?) {
     Row(
         modifier = Modifier.padding(all = 30.dp),
-        horizontalArrangement = Arrangement.Center) {
+        horizontalArrangement = Arrangement.Center
+    ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Header()
-            Body()
+            Body() {
+                navController?.navigate("list")
+            }
         }
     }
 }
@@ -77,25 +105,31 @@ fun Header() {
 }
 
 @Composable
-fun Body() {
+fun Body(clickAction: () -> Unit) {
     Text(
         modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 30.dp),
         text = "¿Or something of?",
         color = Color.Black,
         style = MaterialTheme.typography.h6
     )
-    Row() {
+    Row(modifier = Modifier.clickable {
+        clickAction.invoke()
+    }) {
         for (item in 0..2) {
             FoodMenuItem(
                 types[item].image,
-                types[item].name)
+                types[item].name
+            )
         }
     }
-    Row() {
+    Row(modifier = Modifier.clickable {
+        clickAction.invoke()
+    }) {
         for (item in 3..5) {
             FoodMenuItem(
                 types[item].image,
-                types[item].name)
+                types[item].name
+            )
         }
     }
 }
@@ -117,7 +151,8 @@ fun FoodMenuItem(image: Int, name: String) {
                         .padding(all = 2.dp)
                         .size(55.dp),
                     painter = painterResource(id = image),
-                    contentDescription = name)
+                    contentDescription = name
+                )
                 Text(
                     textAlign = TextAlign.Center,
                     text = name,
@@ -133,6 +168,6 @@ fun FoodMenuItem(image: Int, name: String) {
 @Composable
 fun DefaultPreview() {
     FoodIdeasTheme {
-        Home()
+        Home(null)
     }
 }
