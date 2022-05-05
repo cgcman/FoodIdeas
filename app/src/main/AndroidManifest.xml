@@ -10,6 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodIdeas">
         <activity
+            android:name=".CategoryList"
+            android:exported="true"
+            android:label="@string/title_activity_category_list"
+            android:theme="@style/Theme.FoodIdeas">
+
+        </activity>
+        <activity
             android:name=".DetailActivity"
             android:exported="true"
             android:label="@string/title_activity_detail"
