@@ -3,10 +3,7 @@ package com.grdj.foodideas
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
@@ -29,6 +26,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.grdj.foodideas.data.FoodMenuItems.FoodCategories.types
+import com.grdj.foodideas.ui.screens.details.DetailsScreen
+import com.grdj.foodideas.ui.screens.discover.DiscoverScreen
+import com.grdj.foodideas.ui.screens.home.HomeScreen
 import com.grdj.foodideas.ui.theme.CustomLightGray
 import com.grdj.foodideas.ui.theme.FoodIdeasTheme
 
@@ -36,11 +36,26 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            FoodIdeasTheme {
-                FoodIdeaApplication()
-            }
+            ApplicationMainView()
         }
     }
+}
+
+@Composable
+fun ApplicationMainView(){
+    FoodIdeasTheme {
+        Row(modifier = Modifier
+            .padding(all = 20.dp)
+            .verticalScroll(rememberScrollState())) {
+            DetailsScreen()
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    ApplicationMainView()
 }
 
 @Composable
@@ -69,7 +84,7 @@ fun Home(navController: NavHostController?) {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Header()
-            Body() {
+            Body {
                 navController?.navigate("list")
             }
         }
@@ -161,13 +176,5 @@ fun FoodMenuItem(image: Int, name: String) {
                 )
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    FoodIdeasTheme {
-        Home(null)
     }
 }
